@@ -1,4 +1,4 @@
-package com.sazim.appscheduler.ui.theme
+package com.sazim.appscheduler.core.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
