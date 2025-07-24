@@ -3,16 +3,20 @@ package com.meldcx.appscheduler.schedule.presentation
 import android.app.AlarmManager
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import com.meldcx.appscheduler.schedule.presentation.screens.AppsScreen
-import com.meldcx.appscheduler.schedule.presentation.screens.PermissionScreen
+import androidx.compose.ui.Modifier
+import androidx.navigation.compose.rememberNavController
+import com.meldcx.appscheduler.schedule.presentation.navigation.BottomNavBar
+import com.meldcx.appscheduler.schedule.presentation.navigation.ScheduleNavGraph
+import com.meldcx.appscheduler.schedule.presentation.navigation.ScheduleNavRoutes
 import org.koin.androidx.compose.koinViewModel
 
 class ScheduleActivity : ComponentActivity() {
@@ -22,11 +26,23 @@ class ScheduleActivity : ComponentActivity() {
         setContent {
             val viewModel = koinViewModel<ScheduleViewModel>()
             val state by viewModel.state.collectAsState()
+            val navController = rememberNavController()
 
-            if (hasExactAlarmPermission()) {
-                AppsScreen(viewModel = viewModel, state = state)
-            } else {
-                PermissionScreen(onGrantPermissionClick = ::openAppSettings)
+            if (!hasExactAlarmPermission()) {
+                val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
+                startActivity(intent)
+            }
+
+            Scaffold(bottomBar = {
+                BottomNavBar(navController = navController)
+            }) { innerPadding ->
+                ScheduleNavGraph(
+                    modifier = Modifier.padding(innerPadding),
+                    navController = navController,
+                    startDestination = ScheduleNavRoutes.AppsScreen.route,
+                    viewModel = viewModel,
+                    state = state
+                )
             }
         }
     }
@@ -38,12 +54,5 @@ class ScheduleActivity : ComponentActivity() {
         } else {
             true
         }
-    }
-
-    private fun openAppSettings() {
-        val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM).apply {
-            data = Uri.fromParts("package", packageName, null)
-        }
-        startActivity(intent)
     }
 }

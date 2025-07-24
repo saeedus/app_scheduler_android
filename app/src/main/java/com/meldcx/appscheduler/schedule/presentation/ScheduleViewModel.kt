@@ -15,9 +15,13 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+import com.meldcx.appscheduler.schedule.data.dao.ScheduledAlarmDao
+import com.meldcx.appscheduler.schedule.data.model.ScheduledAlarm
+
 class ScheduleViewModel(
     private val getApps: GetApps,
-    private val alarmScheduler: AlarmScheduler
+    private val alarmScheduler: AlarmScheduler,
+    private val scheduledAlarmDao: ScheduledAlarmDao
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ScheduleState())
@@ -42,6 +46,9 @@ class ScheduleViewModel(
                 val app = state.value.selectedApp
                 if (app != null) {
                     alarmScheduler.schedule(app.packageName, action.timeInMillis)
+                    viewModelScope.launch {
+                        scheduledAlarmDao.insert(ScheduledAlarm(packageName = app.packageName, timeInMillis = action.timeInMillis))
+                    }
                 }
             }
         }
