@@ -6,6 +6,7 @@ package com.meldcx.appscheduler.schedule.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.meldcx.appscheduler.schedule.domain.AlarmScheduler
 import com.meldcx.appscheduler.schedule.domain.GetApps
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +16,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ScheduleViewModel(
-    private val getApps: GetApps
+    private val getApps: GetApps,
+    private val alarmScheduler: AlarmScheduler
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ScheduleState())
@@ -34,8 +36,12 @@ class ScheduleViewModel(
 
             is UserAction.AppSelected -> {
                 _state.update { it.copy(selectedApp = action.appInfo) }
-                viewModelScope.launch {
-                    _uiEvent.send(ScheduleEvents.NavigateToScheduler)
+            }
+
+            is UserAction.Schedule -> {
+                val app = state.value.selectedApp
+                if (app != null) {
+                    alarmScheduler.schedule(app.packageName, action.timeInMillis)
                 }
             }
         }
@@ -45,5 +51,9 @@ class ScheduleViewModel(
         viewModelScope.launch {
             _state.update { it.copy(apps = getApps()) }
         }
+    }
+
+    fun getAlarmScheduler(): AlarmScheduler {
+        return alarmScheduler
     }
 }

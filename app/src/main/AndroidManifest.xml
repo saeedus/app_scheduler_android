@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+
     <queries>
         <intent>
             <action android:name="android.intent.action.MAIN" />
@@ -33,6 +35,10 @@
         <activity
             android:name=".schedule.presentation.ScheduleActivity"
             android:theme="@style/Theme.AppScheduler" />
+
+        <receiver
+            android:name=".schedule.data.AppLaunchReceiver"
+            android:exported="false" />
     </application>
 
 </manifest>
