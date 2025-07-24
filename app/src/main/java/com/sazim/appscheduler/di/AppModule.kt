@@ -4,8 +4,10 @@
 
 package com.sazim.appscheduler.di
 
+import com.sazim.appscheduler.schedule.presentation.ScheduleViewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val appModule = module {
-
+    viewModel { ScheduleViewModel() }
 }

@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".core.presentation.ScheduleActivity"
+            android:name=".schedule.presentation.ScheduleActivity"
             android:theme="@style/Theme.AppScheduler" />
     </application>
 
