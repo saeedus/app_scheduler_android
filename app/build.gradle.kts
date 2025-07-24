@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.sazim.appscheduler"
+    namespace = "com.meldcx.appscheduler"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.sazim.appscheduler"
+        applicationId = "com.medlcx.appscheduler"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
