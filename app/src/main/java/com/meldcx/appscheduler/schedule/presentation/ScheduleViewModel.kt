@@ -31,6 +31,13 @@ class ScheduleViewModel(
     fun onAction(action: UserAction) {
         when (action) {
             UserAction.LoadApps -> loadApps()
+
+            is UserAction.AppSelected -> {
+                _state.update { it.copy(selectedApp = action.appInfo) }
+                viewModelScope.launch {
+                    _uiEvent.send(ScheduleEvents.NavigateToScheduler)
+                }
+            }
         }
     }
 

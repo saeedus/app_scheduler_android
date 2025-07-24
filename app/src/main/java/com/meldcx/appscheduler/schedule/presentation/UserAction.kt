@@ -4,6 +4,9 @@
 
 package com.meldcx.appscheduler.schedule.presentation
 
+import com.meldcx.appscheduler.schedule.domain.model.AppInfo
+
 sealed class UserAction {
     data object LoadApps : UserAction()
+    data class AppSelected(val appInfo: AppInfo) : UserAction()
 }

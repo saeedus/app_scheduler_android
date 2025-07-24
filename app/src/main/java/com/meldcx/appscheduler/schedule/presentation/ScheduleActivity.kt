@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -23,6 +24,15 @@ class ScheduleActivity : ComponentActivity() {
             val state by viewModel.state.collectAsState()
             val navController = rememberNavController()
 
+            LaunchedEffect(Unit) {
+                viewModel.uiEvent.collect { event ->
+                    when (event) {
+                        ScheduleEvents.NavigateToScheduler -> {
+                            navController.navigate(ScheduleNavRoutes.ScheduleScreen.route)
+                        }
+                    }
+                }
+            }
 
             Scaffold(bottomBar = {
                 BottomNavBar(navController = navController)

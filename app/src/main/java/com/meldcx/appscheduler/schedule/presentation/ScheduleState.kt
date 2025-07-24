@@ -8,5 +8,6 @@ import com.meldcx.appscheduler.schedule.domain.model.AppInfo
 
 data class ScheduleState(
     val isLoading: Boolean = false,
-    val apps: List<AppInfo> = emptyList()
+    val apps: List<AppInfo> = emptyList(),
+    val selectedApp: AppInfo? = null
 )
