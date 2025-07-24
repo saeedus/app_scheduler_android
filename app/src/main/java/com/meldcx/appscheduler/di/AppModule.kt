@@ -4,10 +4,13 @@
 
 package com.meldcx.appscheduler.di
 
+import com.meldcx.appscheduler.schedule.domain.GetApps
 import com.meldcx.appscheduler.schedule.presentation.ScheduleViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val appModule = module {
-    viewModel { ScheduleViewModel() }
+    viewModel { ScheduleViewModel(get()) }
+
+    single { GetApps(get()) }
 }

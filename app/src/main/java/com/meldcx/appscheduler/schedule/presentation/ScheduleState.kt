@@ -4,6 +4,9 @@
 
 package com.meldcx.appscheduler.schedule.presentation
 
+import com.meldcx.appscheduler.schedule.domain.model.AppInfo
+
 data class ScheduleState(
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val apps: List<AppInfo> = emptyList()
 )
