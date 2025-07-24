@@ -18,25 +18,58 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TimePicker
+import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.meldcx.appscheduler.schedule.domain.AlarmScheduler
 import com.meldcx.appscheduler.schedule.presentation.ScheduleState
 import com.meldcx.appscheduler.schedule.presentation.ScheduleViewModel
 import com.meldcx.appscheduler.schedule.presentation.UserAction
+import com.meldcx.appscheduler.schedule.presentation.components.TimePickerDialog
+import org.koin.androidx.compose.koinViewModel
+import java.util.Calendar
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppsScreen(modifier: Modifier = Modifier, viewModel: ScheduleViewModel, state: ScheduleState) {
+fun AppsScreen(modifier: Modifier = Modifier, viewModel: ScheduleViewModel = koinViewModel(), state: ScheduleState) {
+
+    var showTimePickerDialog by remember {
+        mutableStateOf(false)
+    }
+    val timePickerState = rememberTimePickerState()
+    val alarmScheduler: AlarmScheduler = koinViewModel<ScheduleViewModel>().getAlarmScheduler()
+
 
     LaunchedEffect(key1 = Unit) {
         viewModel.onAction(UserAction.LoadApps)
+    }
+
+    if (showTimePickerDialog) {
+        TimePickerDialog(onCancel = {
+            showTimePickerDialog = false
+        }, onConfirm = {
+            showTimePickerDialog = false
+            val calendar = Calendar.getInstance()
+            calendar.set(Calendar.HOUR_OF_DAY, timePickerState.hour)
+            calendar.set(Calendar.MINUTE, timePickerState.minute)
+            calendar.set(Calendar.SECOND, 0)
+            viewModel.onAction(UserAction.Schedule(calendar.timeInMillis))
+        }, onSchedule = { /*TODO*/ }, alarmScheduler = alarmScheduler) {
+            TimePicker(state = timePickerState)
+        }
     }
 
     Column(modifier = modifier.fillMaxSize()) {
@@ -60,6 +93,7 @@ fun AppsScreen(modifier: Modifier = Modifier, viewModel: ScheduleViewModel, stat
                             indication = ripple(),
                             interactionSource = remember { MutableInteractionSource() }) {
                             viewModel.onAction(UserAction.AppSelected(appInfo))
+                            showTimePickerDialog = true
                         }) {
                     Column(
                         modifier = Modifier.fillMaxSize(),

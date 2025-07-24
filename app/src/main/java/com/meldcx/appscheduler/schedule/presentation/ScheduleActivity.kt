@@ -24,15 +24,15 @@ class ScheduleActivity : ComponentActivity() {
             val state by viewModel.state.collectAsState()
             val navController = rememberNavController()
 
-            LaunchedEffect(Unit) {
-                viewModel.uiEvent.collect { event ->
-                    when (event) {
-                        ScheduleEvents.NavigateToScheduler -> {
-                            navController.navigate(ScheduleNavRoutes.ScheduleScreen.route)
-                        }
-                    }
-                }
-            }
+//            LaunchedEffect(Unit) {
+//                viewModel.uiEvent.collect { event ->
+//                    when (event) {
+//                        ScheduleEvents.NavigateToScheduler -> {
+//                            navController.navigate(ScheduleNavRoutes.ScheduleScreen.route)
+//                        }
+//                    }
+//                }
+//            }
 
             Scaffold(bottomBar = {
                 BottomNavBar(navController = navController)

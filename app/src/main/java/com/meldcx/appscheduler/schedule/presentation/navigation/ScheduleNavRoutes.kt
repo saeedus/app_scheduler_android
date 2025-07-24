@@ -8,5 +8,4 @@ sealed class ScheduleNavRoutes(val route: String) {
     data object AppsScreen : ScheduleNavRoutes("app_screen")
     data object UpcomingScheduleScreen : ScheduleNavRoutes("upcoming_schedule_screen")
     data object ScheduleHistoryScreen : ScheduleNavRoutes("schedule_history_screen")
-    data object ScheduleScreen : ScheduleNavRoutes("schedule_screen")
 }
