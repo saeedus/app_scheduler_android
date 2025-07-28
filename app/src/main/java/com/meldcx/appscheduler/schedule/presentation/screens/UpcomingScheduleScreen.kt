@@ -30,11 +30,19 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.material3.ripple
+import androidx.compose.runtime.remember
+import androidx.navigation.NavController
+import com.meldcx.appscheduler.schedule.presentation.navigation.ScheduleNavRoutes
+
 @Composable
 fun UpcomingScheduleScreen(
     modifier: Modifier = Modifier,
     viewModel: ScheduleViewModel,
-    state: ScheduleState
+    state: ScheduleState,
+    navController: NavController
 ) {
     val context = LocalContext.current
 
@@ -62,6 +70,18 @@ fun UpcomingScheduleScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 4.dp)
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = ripple()
+                        ) {
+                            if (!alarm.isExecuted && calendar.timeInMillis > System.currentTimeMillis()) {
+                                navController.navigate(
+                                    ScheduleNavRoutes.EditScheduleScreen.createRoute(
+                                        alarm.id
+                                    )
+                                )
+                            }
+                        }
                 ) {
                     Row(
                         modifier = Modifier.padding(8.dp),

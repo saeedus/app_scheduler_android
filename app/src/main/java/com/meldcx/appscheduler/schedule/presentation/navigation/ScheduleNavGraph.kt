@@ -13,6 +13,9 @@ import com.meldcx.appscheduler.schedule.presentation.ScheduleState
 import com.meldcx.appscheduler.schedule.presentation.ScheduleViewModel
 import com.meldcx.appscheduler.schedule.presentation.screens.AppsScreen
 
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
+import com.meldcx.appscheduler.schedule.presentation.screens.EditScheduleScreen
 import com.meldcx.appscheduler.schedule.presentation.screens.UpcomingScheduleScreen
 
 @Composable
@@ -32,9 +35,26 @@ fun ScheduleNavGraph(
         }
 
         composable(route = ScheduleNavRoutes.UpcomingScheduleScreen.route) {
-            UpcomingScheduleScreen(modifier = modifier, viewModel = viewModel, state = state)
+            UpcomingScheduleScreen(
+                modifier = modifier,
+                viewModel = viewModel,
+                state = state,
+                navController = navController
+            )
         }
 
-        
+        composable(
+            route = ScheduleNavRoutes.EditScheduleScreen.route,
+            arguments = listOf(navArgument("scheduleId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val scheduleId = backStackEntry.arguments?.getInt("scheduleId")
+            if (scheduleId != null) {
+                EditScheduleScreen(
+                    modifier = modifier,
+                    viewModel = viewModel,
+                    scheduleId = scheduleId
+                )
+            }
+        }
     }
 }

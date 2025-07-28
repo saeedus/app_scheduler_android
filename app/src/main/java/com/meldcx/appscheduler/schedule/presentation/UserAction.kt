@@ -10,4 +10,5 @@ sealed class UserAction {
     data object LoadApps : UserAction()
     data class AppSelected(val appInfo: AppInfo) : UserAction()
     data class Schedule(val year: Int, val month: Int, val day: Int, val hour: Int, val minute: Int) : UserAction()
+    data class UpdateSchedule(val scheduledAlarm: com.meldcx.appscheduler.schedule.data.model.ScheduledAlarm) : UserAction()
 }
