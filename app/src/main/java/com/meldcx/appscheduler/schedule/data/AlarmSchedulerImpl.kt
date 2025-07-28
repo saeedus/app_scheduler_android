@@ -10,7 +10,7 @@ import android.content.Context
 import android.content.Intent
 import com.meldcx.appscheduler.schedule.domain.AlarmScheduler
 
-import com.meldcx.appscheduler.util.Constants
+import com.meldcx.appscheduler.core.presentation.util.Constants
 
 class AlarmSchedulerImpl(private val context: Context) : AlarmScheduler {
 

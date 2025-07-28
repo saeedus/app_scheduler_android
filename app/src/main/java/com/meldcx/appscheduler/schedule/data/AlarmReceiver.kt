@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import com.meldcx.appscheduler.service.AlarmService
-import com.meldcx.appscheduler.util.Constants
+import com.meldcx.appscheduler.core.presentation.util.Constants
 
 class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent?) {

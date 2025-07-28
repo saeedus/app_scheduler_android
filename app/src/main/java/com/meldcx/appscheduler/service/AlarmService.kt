@@ -4,7 +4,7 @@ import android.accessibilityservice.AccessibilityService
 import android.content.Intent
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
-import com.meldcx.appscheduler.util.Constants
+import com.meldcx.appscheduler.core.presentation.util.Constants
 
 class AlarmService : AccessibilityService() {
 
