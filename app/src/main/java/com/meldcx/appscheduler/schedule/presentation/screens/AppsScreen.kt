@@ -38,7 +38,7 @@ import com.meldcx.appscheduler.schedule.domain.AlarmScheduler
 import com.meldcx.appscheduler.schedule.presentation.ScheduleState
 import com.meldcx.appscheduler.schedule.presentation.ScheduleViewModel
 import com.meldcx.appscheduler.schedule.presentation.UserAction
-import com.meldcx.appscheduler.schedule.presentation.components.TimePickerDialog
+import com.meldcx.appscheduler.schedule.presentation.components.DateTimePickerDialog
 import org.koin.androidx.compose.koinViewModel
 import java.util.Calendar
 
@@ -49,8 +49,7 @@ fun AppsScreen(modifier: Modifier = Modifier, viewModel: ScheduleViewModel = koi
     var showTimePickerDialog by remember {
         mutableStateOf(false)
     }
-    val timePickerState = rememberTimePickerState()
-    val alarmScheduler: AlarmScheduler = koinViewModel<ScheduleViewModel>().getAlarmScheduler()
+    
 
 
     LaunchedEffect(key1 = Unit) {
@@ -58,18 +57,13 @@ fun AppsScreen(modifier: Modifier = Modifier, viewModel: ScheduleViewModel = koi
     }
 
     if (showTimePickerDialog) {
-        TimePickerDialog(onCancel = {
-            showTimePickerDialog = false
-        }, onConfirm = {
-            showTimePickerDialog = false
-            val calendar = Calendar.getInstance()
-            calendar.set(Calendar.HOUR_OF_DAY, timePickerState.hour)
-            calendar.set(Calendar.MINUTE, timePickerState.minute)
-            calendar.set(Calendar.SECOND, 0)
-            viewModel.onAction(UserAction.Schedule(calendar.timeInMillis))
-        }, onSchedule = { /*TODO*/ }) {
-            TimePicker(state = timePickerState)
-        }
+        DateTimePickerDialog(
+            onCancel = { showTimePickerDialog = false },
+            onConfirm = {
+                showTimePickerDialog = false
+                viewModel.onAction(UserAction.Schedule(it))
+            }
+        )
     }
 
     Column(modifier = modifier.fillMaxSize()) {
