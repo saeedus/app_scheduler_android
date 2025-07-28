@@ -10,6 +10,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -18,7 +19,6 @@ import com.meldcx.appscheduler.schedule.presentation.navigation.BottomNavBar
 import com.meldcx.appscheduler.schedule.presentation.navigation.ScheduleNavGraph
 import com.meldcx.appscheduler.schedule.presentation.navigation.ScheduleNavRoutes
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.compose.viewmodel.koinViewModel
 
 class ScheduleActivity : ComponentActivity() {
 
@@ -34,6 +34,16 @@ class ScheduleActivity : ComponentActivity() {
             if (!hasExactAlarmPermission()) {
                 val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
                 startActivity(intent)
+            }
+
+            LaunchedEffect(Unit) {
+                viewModel.uiEvent.collect { event ->
+                    when (event) {
+                        ScheduleEvents.Pop -> {
+                            navController.popBackStack()
+                        }
+                    }
+                }
             }
 
             Scaffold(bottomBar = {

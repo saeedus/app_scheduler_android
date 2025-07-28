@@ -67,6 +67,7 @@ class ScheduleViewModel(
                     scheduledAlarmDao.update(action.scheduledAlarm)
                     alarmScheduler.schedule(action.scheduledAlarm) // Reschedule with updated time
                     loadScheduledAlarms()
+                    _uiEvent.send(ScheduleEvents.Pop)
                 }
             }
 
@@ -76,6 +77,7 @@ class ScheduleViewModel(
                     scheduledAlarmDao.update(cancelledAlarm)
                     alarmScheduler.cancel(cancelledAlarm)
                     loadScheduledAlarms()
+                    _uiEvent.send(ScheduleEvents.Pop)
                 }
             }
 

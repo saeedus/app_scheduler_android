@@ -40,9 +40,9 @@ fun EditScheduleScreen(
 
     LaunchedEffect(scheduleId) {
         selectedAlarm = viewModel.getScheduledAlarmById(scheduleId)
-        if (selectedAlarm != null) {
-            showDateTimePickerDialog = true
-        }
+//        if (selectedAlarm != null) {
+//            showDateTimePickerDialog = true
+//        }
     }
 
     Column(

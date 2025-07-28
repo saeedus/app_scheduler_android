@@ -5,6 +5,6 @@
 package com.meldcx.appscheduler.schedule.presentation
 
 sealed class ScheduleEvents {
-    data object NavigateToScheduler : ScheduleEvents()
+    data object Pop : ScheduleEvents()
 
 }
