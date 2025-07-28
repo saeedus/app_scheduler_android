@@ -25,15 +25,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.meldcx.appscheduler.schedule.domain.AlarmScheduler
 
 @Composable
 fun TimePickerDialog(
     title: String = "Select Time",
     onCancel: () -> Unit,
     onConfirm: () -> Unit,
-    onSchedule: () -> Unit, // Add this line
-    alarmScheduler: AlarmScheduler, // Add this line
+    onSchedule: () -> Unit,
     content: @Composable () -> Unit
 ) {
     Dialog(

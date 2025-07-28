@@ -67,7 +67,7 @@ fun AppsScreen(modifier: Modifier = Modifier, viewModel: ScheduleViewModel = koi
             calendar.set(Calendar.MINUTE, timePickerState.minute)
             calendar.set(Calendar.SECOND, 0)
             viewModel.onAction(UserAction.Schedule(calendar.timeInMillis))
-        }, onSchedule = { /*TODO*/ }, alarmScheduler = alarmScheduler) {
+        }, onSchedule = { /*TODO*/ }) {
             TimePicker(state = timePickerState)
         }
     }

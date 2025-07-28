@@ -25,7 +25,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppScheduler">
         <activity
-            android:name=".MainActivity"
+            android:name=".permissions.PermissionActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.AppScheduler">
@@ -35,6 +35,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.AppScheduler" />
         <activity
             android:name=".schedule.presentation.ScheduleActivity"
             android:theme="@style/Theme.AppScheduler" />
