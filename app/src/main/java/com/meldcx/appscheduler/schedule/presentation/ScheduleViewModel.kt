@@ -52,9 +52,10 @@ class ScheduleViewModel(
                         hour = action.hour,
                         minute = action.minute
                     )
-                    alarmScheduler.schedule(scheduledAlarm)
                     viewModelScope.launch {
-                        scheduledAlarmDao.insert(scheduledAlarm)
+                        val newId = scheduledAlarmDao.insert(scheduledAlarm)
+                        val alarmWithId = scheduledAlarm.copy(id = newId.toInt())
+                        alarmScheduler.schedule(alarmWithId)
                     }
                 }
             }

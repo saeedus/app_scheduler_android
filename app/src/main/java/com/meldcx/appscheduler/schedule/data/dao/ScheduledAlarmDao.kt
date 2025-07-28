@@ -8,7 +8,7 @@ import com.meldcx.appscheduler.schedule.data.model.ScheduledAlarm
 @Dao
 interface ScheduledAlarmDao {
     @Insert
-    suspend fun insert(scheduledAlarm: ScheduledAlarm)
+    suspend fun insert(scheduledAlarm: ScheduledAlarm): Long
 
     @Query("SELECT * FROM scheduled_alarms")
     suspend fun getAll(): List<ScheduledAlarm>

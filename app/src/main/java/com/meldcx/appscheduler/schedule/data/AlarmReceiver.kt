@@ -15,9 +15,8 @@ import org.koin.java.KoinJavaComponent.getKoin
 class AlarmReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent?) {
-        intent?.let {
-            val scheduledAlarmFromIntent =
-                it.getParcelableExtra<ScheduledAlarm>(Constants.SCHEDULED_ALARM_KEY)
+        intent?.let { it ->
+            val scheduledAlarmFromIntent = it.getParcelableExtra<ScheduledAlarm>(Constants.SCHEDULED_ALARM_KEY)
             scheduledAlarmFromIntent?.let { alarmFromIntent ->
                 val serviceIntent = Intent(context, AlarmService::class.java).apply {
                     putExtra(Constants.PACKAGE_NAME_KEY, alarmFromIntent.packageName)
@@ -27,8 +26,7 @@ class AlarmReceiver : BroadcastReceiver() {
                 CoroutineScope(Dispatchers.IO).launch {
                     val scheduledAlarmDao: ScheduledAlarmDao = getKoin().get()
 
-                    val alarmToUpdate =
-                        scheduledAlarmDao.getAll().find { it.id == alarmFromIntent.id }
+                    val alarmToUpdate = scheduledAlarmDao.getAll().find { it.id == alarmFromIntent.id }
                     alarmToUpdate?.let { existingAlarm ->
                         scheduledAlarmDao.update(existingAlarm.copy(isExecuted = true))
                     }
