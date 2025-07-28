@@ -73,13 +73,8 @@ class ScheduleViewModel(
     private fun loadScheduledAlarms() {
         viewModelScope.launch {
             val allAlarms = scheduledAlarmDao.getAll()
-            val upcoming = mutableListOf<ScheduledAlarm>()
-            val executed = mutableListOf<ScheduledAlarm>()
-
-            val currentTime = System.currentTimeMillis()
-
-            allAlarms.forEach { alarm ->
-                val calendar = java.util.Calendar.getInstance().apply {
+            _state.update { it.copy(allScheduledAlarms = allAlarms.sortedBy { alarm ->
+                java.util.Calendar.getInstance().apply {
                     set(java.util.Calendar.YEAR, alarm.year)
                     set(java.util.Calendar.MONTH, alarm.month)
                     set(java.util.Calendar.DAY_OF_MONTH, alarm.day)
@@ -87,15 +82,8 @@ class ScheduleViewModel(
                     set(java.util.Calendar.MINUTE, alarm.minute)
                     set(java.util.Calendar.SECOND, 0)
                     set(java.util.Calendar.MILLISECOND, 0)
-                }
-
-                if (alarm.isExecuted || calendar.timeInMillis < currentTime) {
-                    executed.add(alarm)
-                } else {
-                    upcoming.add(alarm)
-                }
-            }
-            _state.update { it.copy(upcomingAlarms = upcoming, executedAlarms = executed) }
+                }.timeInMillis
+            }) }
         }
     }
 }

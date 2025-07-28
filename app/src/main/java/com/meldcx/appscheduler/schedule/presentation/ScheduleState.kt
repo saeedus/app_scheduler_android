@@ -11,6 +11,5 @@ data class ScheduleState(
     val isLoading: Boolean = false,
     val apps: List<AppInfo> = emptyList(),
     val selectedApp: AppInfo? = null,
-    val upcomingAlarms: List<ScheduledAlarm> = emptyList(),
-    val executedAlarms: List<ScheduledAlarm> = emptyList()
+    val allScheduledAlarms: List<ScheduledAlarm> = emptyList()
 )
