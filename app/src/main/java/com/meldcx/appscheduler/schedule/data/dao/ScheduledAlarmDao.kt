@@ -12,4 +12,9 @@ interface ScheduledAlarmDao {
 
     @Query("SELECT * FROM scheduled_alarms")
     suspend fun getAll(): List<ScheduledAlarm>
+
+    
+
+    @androidx.room.Update
+    suspend fun update(scheduledAlarm: ScheduledAlarm)
 }

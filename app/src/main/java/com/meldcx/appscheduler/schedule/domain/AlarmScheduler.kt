@@ -4,6 +4,8 @@
 
 package com.meldcx.appscheduler.schedule.domain
 
+import com.meldcx.appscheduler.schedule.data.model.ScheduledAlarm
+
 interface AlarmScheduler {
-    fun schedule(packageName: String, timeInMillis: Long)
+    fun schedule(alarm: ScheduledAlarm)
 }

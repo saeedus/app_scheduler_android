@@ -9,5 +9,5 @@ import com.meldcx.appscheduler.schedule.domain.model.AppInfo
 sealed class UserAction {
     data object LoadApps : UserAction()
     data class AppSelected(val appInfo: AppInfo) : UserAction()
-    data class Schedule(val timeInMillis: Long) : UserAction()
+    data class Schedule(val year: Int, val month: Int, val day: Int, val hour: Int, val minute: Int) : UserAction()
 }

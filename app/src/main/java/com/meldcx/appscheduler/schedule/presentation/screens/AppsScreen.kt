@@ -21,8 +21,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TimePicker
-import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -34,13 +32,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.meldcx.appscheduler.schedule.domain.AlarmScheduler
 import com.meldcx.appscheduler.schedule.presentation.ScheduleState
 import com.meldcx.appscheduler.schedule.presentation.ScheduleViewModel
 import com.meldcx.appscheduler.schedule.presentation.UserAction
 import com.meldcx.appscheduler.schedule.presentation.components.DateTimePickerDialog
 import org.koin.androidx.compose.koinViewModel
-import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -59,9 +55,9 @@ fun AppsScreen(modifier: Modifier = Modifier, viewModel: ScheduleViewModel = koi
     if (showTimePickerDialog) {
         DateTimePickerDialog(
             onCancel = { showTimePickerDialog = false },
-            onConfirm = {
+            onConfirm = { year, month, day, hour, minute ->
                 showTimePickerDialog = false
-                viewModel.onAction(UserAction.Schedule(it))
+                viewModel.onAction(UserAction.Schedule(year, month, day, hour, minute))
             }
         )
     }

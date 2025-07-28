@@ -6,6 +6,8 @@ package com.meldcx.appscheduler.schedule.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.meldcx.appscheduler.schedule.data.dao.ScheduledAlarmDao
+import com.meldcx.appscheduler.schedule.data.model.ScheduledAlarm
 import com.meldcx.appscheduler.schedule.domain.AlarmScheduler
 import com.meldcx.appscheduler.schedule.domain.GetApps
 import kotlinx.coroutines.channels.Channel
@@ -14,9 +16,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-
-import com.meldcx.appscheduler.schedule.data.dao.ScheduledAlarmDao
-import com.meldcx.appscheduler.schedule.data.model.ScheduledAlarm
 
 class ScheduleViewModel(
     private val getApps: GetApps,
@@ -45,9 +44,17 @@ class ScheduleViewModel(
             is UserAction.Schedule -> {
                 val app = state.value.selectedApp
                 if (app != null) {
-                    alarmScheduler.schedule(app.packageName, action.timeInMillis)
+                    val scheduledAlarm = ScheduledAlarm(
+                        packageName = app.packageName,
+                        year = action.year,
+                        month = action.month,
+                        day = action.day,
+                        hour = action.hour,
+                        minute = action.minute
+                    )
+                    alarmScheduler.schedule(scheduledAlarm)
                     viewModelScope.launch {
-                        scheduledAlarmDao.insert(ScheduledAlarm(packageName = app.packageName, timeInMillis = action.timeInMillis))
+                        scheduledAlarmDao.insert(scheduledAlarm)
                     }
                 }
             }
@@ -58,9 +65,5 @@ class ScheduleViewModel(
         viewModelScope.launch {
             _state.update { it.copy(apps = getApps()) }
         }
-    }
-
-    fun getAlarmScheduler(): AlarmScheduler {
-        return alarmScheduler
     }
 }

@@ -33,7 +33,7 @@ import java.util.Calendar
 @Composable
 fun DateTimePickerDialog(
     onCancel: () -> Unit,
-    onConfirm: (Long) -> Unit,
+    onConfirm: (year: Int, month: Int, day: Int, hour: Int, minute: Int) -> Unit,
 ) {
     val context = LocalContext.current
     val today = Calendar.getInstance().apply {
@@ -87,19 +87,22 @@ fun DateTimePickerDialog(
                         Spacer(modifier = Modifier.height(16.dp))
                         Button(onClick = {
                             val calendar = Calendar.getInstance()
-                            calendar.timeInMillis =
-                                datePickerState.selectedDateMillis ?: System.currentTimeMillis()
-                            calendar.set(Calendar.HOUR_OF_DAY, timePickerState.hour)
-                            calendar.set(Calendar.MINUTE, timePickerState.minute)
+                            calendar.timeInMillis = datePickerState.selectedDateMillis ?: System.currentTimeMillis()
+                            val year = calendar.get(Calendar.YEAR)
+                            val month = calendar.get(Calendar.MONTH)
+                            val day = calendar.get(Calendar.DAY_OF_MONTH)
+                            val hour = timePickerState.hour
+                            val minute = timePickerState.minute
 
-                            if (calendar.timeInMillis < System.currentTimeMillis()) {
-                                Toast.makeText(
-                                    context,
-                                    "Cannot select a past time",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                            val selectedDateTime = Calendar.getInstance().apply {
+                                set(year, month, day, hour, minute, 0)
+                                set(Calendar.MILLISECOND, 0)
+                            }
+
+                            if (selectedDateTime.timeInMillis < System.currentTimeMillis()) {
+                                Toast.makeText(context, "Cannot select a past time", Toast.LENGTH_SHORT).show()
                             } else {
-                                onConfirm(calendar.timeInMillis)
+                                onConfirm(year, month, day, hour, minute)
                             }
                         }) {
                             Text(text = "Confirm")
