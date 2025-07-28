@@ -4,10 +4,13 @@
 
 package com.meldcx.appscheduler.schedule.presentation
 
+import com.meldcx.appscheduler.schedule.data.model.ScheduledAlarm
 import com.meldcx.appscheduler.schedule.domain.model.AppInfo
 
 data class ScheduleState(
     val isLoading: Boolean = false,
     val apps: List<AppInfo> = emptyList(),
-    val selectedApp: AppInfo? = null
+    val selectedApp: AppInfo? = null,
+    val upcomingAlarms: List<ScheduledAlarm> = emptyList(),
+    val executedAlarms: List<ScheduledAlarm> = emptyList()
 )

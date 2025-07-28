@@ -12,7 +12,7 @@ import androidx.navigation.compose.composable
 import com.meldcx.appscheduler.schedule.presentation.ScheduleState
 import com.meldcx.appscheduler.schedule.presentation.ScheduleViewModel
 import com.meldcx.appscheduler.schedule.presentation.screens.AppsScreen
-import com.meldcx.appscheduler.schedule.presentation.screens.ScheduleHistoryScreen
+
 import com.meldcx.appscheduler.schedule.presentation.screens.UpcomingScheduleScreen
 
 @Composable
@@ -35,8 +35,6 @@ fun ScheduleNavGraph(
             UpcomingScheduleScreen(modifier = modifier, viewModel = viewModel, state = state)
         }
 
-        composable(route = ScheduleNavRoutes.ScheduleHistoryScreen.route) {
-            ScheduleHistoryScreen(modifier = modifier, viewModel = viewModel, state = state)
-        }
+        
     }
 }

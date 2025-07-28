@@ -31,6 +31,7 @@ class ScheduleViewModel(
 
     init {
         loadApps()
+        loadScheduledAlarms()
     }
 
     fun onAction(action: UserAction) {
@@ -56,6 +57,7 @@ class ScheduleViewModel(
                         val newId = scheduledAlarmDao.insert(scheduledAlarm)
                         val alarmWithId = scheduledAlarm.copy(id = newId.toInt())
                         alarmScheduler.schedule(alarmWithId)
+                        loadScheduledAlarms() // Reload alarms after scheduling
                     }
                 }
             }
@@ -65,6 +67,35 @@ class ScheduleViewModel(
     private fun loadApps() {
         viewModelScope.launch {
             _state.update { it.copy(apps = getApps()) }
+        }
+    }
+
+    private fun loadScheduledAlarms() {
+        viewModelScope.launch {
+            val allAlarms = scheduledAlarmDao.getAll()
+            val upcoming = mutableListOf<ScheduledAlarm>()
+            val executed = mutableListOf<ScheduledAlarm>()
+
+            val currentTime = System.currentTimeMillis()
+
+            allAlarms.forEach { alarm ->
+                val calendar = java.util.Calendar.getInstance().apply {
+                    set(java.util.Calendar.YEAR, alarm.year)
+                    set(java.util.Calendar.MONTH, alarm.month)
+                    set(java.util.Calendar.DAY_OF_MONTH, alarm.day)
+                    set(java.util.Calendar.HOUR_OF_DAY, alarm.hour)
+                    set(java.util.Calendar.MINUTE, alarm.minute)
+                    set(java.util.Calendar.SECOND, 0)
+                    set(java.util.Calendar.MILLISECOND, 0)
+                }
+
+                if (alarm.isExecuted || calendar.timeInMillis < currentTime) {
+                    executed.add(alarm)
+                } else {
+                    upcoming.add(alarm)
+                }
+            }
+            _state.update { it.copy(upcomingAlarms = upcoming, executedAlarms = executed) }
         }
     }
 }
