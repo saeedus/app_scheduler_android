@@ -10,12 +10,14 @@ import android.content.Context
 import android.content.Intent
 import com.meldcx.appscheduler.schedule.domain.AlarmScheduler
 
+import com.meldcx.appscheduler.util.Constants
+
 class AlarmSchedulerImpl(private val context: Context) : AlarmScheduler {
 
     override fun schedule(packageName: String, timeInMillis: Long) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val intent = Intent(context, AppLaunchReceiver::class.java).apply {
-            putExtra("package_name", packageName)
+        val intent = Intent(context, AlarmReceiver::class.java).apply {
+            putExtra(Constants.PACKAGE_NAME_KEY, packageName)
         }
         val pendingIntent = PendingIntent.getBroadcast(
             context,

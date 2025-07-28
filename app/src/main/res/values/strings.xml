@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">App Scheduler</string>
+    <string name="accessibility_service_description">This service helps manage app schedules.</string>
+
 </resources>
