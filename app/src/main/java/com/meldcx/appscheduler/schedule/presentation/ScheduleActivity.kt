@@ -17,14 +17,17 @@ import androidx.navigation.compose.rememberNavController
 import com.meldcx.appscheduler.schedule.presentation.navigation.BottomNavBar
 import com.meldcx.appscheduler.schedule.presentation.navigation.ScheduleNavGraph
 import com.meldcx.appscheduler.schedule.presentation.navigation.ScheduleNavRoutes
-import org.koin.androidx.compose.koinViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 class ScheduleActivity : ComponentActivity() {
+
+    private val viewModel: ScheduleViewModel by viewModel()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
-            val viewModel = koinViewModel<ScheduleViewModel>()
             val state by viewModel.state.collectAsState()
             val navController = rememberNavController()
 
@@ -45,6 +48,11 @@ class ScheduleActivity : ComponentActivity() {
                 )
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.onAction(UserAction.LoadScheduleAlarms)
     }
 
     private fun hasExactAlarmPermission(): Boolean {

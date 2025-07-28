@@ -78,6 +78,8 @@ class ScheduleViewModel(
                     loadScheduledAlarms()
                 }
             }
+
+            UserAction.LoadScheduleAlarms -> loadScheduledAlarms()
         }
     }
 
@@ -90,17 +92,19 @@ class ScheduleViewModel(
     private fun loadScheduledAlarms() {
         viewModelScope.launch {
             val allAlarms = scheduledAlarmDao.getAll()
-            _state.update { it.copy(allScheduledAlarms = allAlarms.sortedByDescending { alarm ->
-                java.util.Calendar.getInstance().apply {
-                    set(java.util.Calendar.YEAR, alarm.year)
-                    set(java.util.Calendar.MONTH, alarm.month)
-                    set(java.util.Calendar.DAY_OF_MONTH, alarm.day)
-                    set(java.util.Calendar.HOUR_OF_DAY, alarm.hour)
-                    set(java.util.Calendar.MINUTE, alarm.minute)
-                    set(java.util.Calendar.SECOND, 0)
-                    set(java.util.Calendar.MILLISECOND, 0)
-                }.timeInMillis
-            }) }
+            _state.update {
+                it.copy(allScheduledAlarms = allAlarms.sortedByDescending { alarm ->
+                    java.util.Calendar.getInstance().apply {
+                        set(java.util.Calendar.YEAR, alarm.year)
+                        set(java.util.Calendar.MONTH, alarm.month)
+                        set(java.util.Calendar.DAY_OF_MONTH, alarm.day)
+                        set(java.util.Calendar.HOUR_OF_DAY, alarm.hour)
+                        set(java.util.Calendar.MINUTE, alarm.minute)
+                        set(java.util.Calendar.SECOND, 0)
+                        set(java.util.Calendar.MILLISECOND, 0)
+                    }.timeInMillis
+                })
+            }
         }
     }
 
