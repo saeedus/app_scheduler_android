@@ -1,5 +1,6 @@
 package com.meldcx.appscheduler.schedule.presentation.screens
 
+import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,9 +11,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.material.icons.filled.Error
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -89,10 +90,19 @@ fun UpcomingScheduleScreen(
                         }
                         Spacer(modifier = Modifier.weight(1f))
                         Icon(
-                            imageVector = if (alarm.isExecuted) Icons.Filled.CheckCircle else Icons.Filled.Schedule,
-                            tint = if (alarm.isExecuted) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(
-                                alpha = 0.4f
-                            ),
+                            imageVector = when {
+                                alarm.isExecuted -> Icons.Filled.CheckCircle
+                                calendar.timeInMillis < System.currentTimeMillis() -> Icons.Filled.Error
+                                else -> Icons.Filled.AccessTime
+                            },
+                            tint = when {
+                                alarm.isExecuted -> Color(0xFF4CAF50)
+                                calendar.timeInMillis < System.currentTimeMillis() -> Color(
+                                    0xFFF44336
+                                )
+
+                                else -> Color(0xFFFF9800)
+                            },
                             contentDescription = null
                         )
                     }
