@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
@@ -29,7 +30,6 @@ import com.meldcx.appscheduler.schedule.presentation.ScheduleViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
-
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material3.ripple
@@ -74,7 +74,7 @@ fun UpcomingScheduleScreen(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = ripple()
                         ) {
-                            if (!alarm.isExecuted && calendar.timeInMillis > System.currentTimeMillis()) {
+                            if (!alarm.isExecuted && !alarm.isCancelled && calendar.timeInMillis > System.currentTimeMillis()) {
                                 navController.navigate(
                                     ScheduleNavRoutes.EditScheduleScreen.createRoute(
                                         alarm.id
@@ -111,11 +111,13 @@ fun UpcomingScheduleScreen(
                         Spacer(modifier = Modifier.weight(1f))
                         Icon(
                             imageVector = when {
+                                alarm.isCancelled -> Icons.Filled.Close
                                 alarm.isExecuted -> Icons.Filled.CheckCircle
                                 calendar.timeInMillis < System.currentTimeMillis() -> Icons.Filled.Error
                                 else -> Icons.Filled.AccessTime
                             },
                             tint = when {
+                                alarm.isCancelled -> Color.Gray
                                 alarm.isExecuted -> Color(0xFF4CAF50)
                                 calendar.timeInMillis < System.currentTimeMillis() -> Color(
                                     0xFFF44336

@@ -8,4 +8,5 @@ import com.meldcx.appscheduler.schedule.data.model.ScheduledAlarm
 
 interface AlarmScheduler {
     fun schedule(alarm: ScheduledAlarm)
+    fun cancel(alarm: ScheduledAlarm)
 }

@@ -90,6 +90,12 @@ fun EditScheduleScreen(
                 Text(text = "Change Schedule Time")
             }
 
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Button(onClick = { viewModel.onAction(UserAction.CancelSchedule(alarm)) }) {
+                Text(text = "Cancel Schedule")
+            }
+
             if (showDateTimePickerDialog) {
                 DateTimePickerDialog(
                     onCancel = { showDateTimePickerDialog = false },
@@ -106,7 +112,7 @@ fun EditScheduleScreen(
                     }
                 )
             }
-        } ?: run {
+        }?: run {
             Text(text = "Schedule not found.")
         }
     }

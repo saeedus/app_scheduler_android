@@ -16,5 +16,6 @@ data class ScheduledAlarm(
     val day: Int,
     val hour: Int,
     val minute: Int,
-    val isExecuted: Boolean = false
+    val isExecuted: Boolean = false,
+    val isCancelled: Boolean = false
 ) : Parcelable

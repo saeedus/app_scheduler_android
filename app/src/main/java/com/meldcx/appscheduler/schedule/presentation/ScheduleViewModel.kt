@@ -65,7 +65,16 @@ class ScheduleViewModel(
             is UserAction.UpdateSchedule -> {
                 viewModelScope.launch {
                     scheduledAlarmDao.update(action.scheduledAlarm)
-                    alarmScheduler.schedule(action.scheduledAlarm)
+                    alarmScheduler.schedule(action.scheduledAlarm) // Reschedule with updated time
+                    loadScheduledAlarms()
+                }
+            }
+
+            is UserAction.CancelSchedule -> {
+                viewModelScope.launch {
+                    val cancelledAlarm = action.scheduledAlarm.copy(isCancelled = true)
+                    scheduledAlarmDao.update(cancelledAlarm)
+                    alarmScheduler.cancel(cancelledAlarm)
                     loadScheduledAlarms()
                 }
             }

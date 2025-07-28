@@ -19,7 +19,7 @@ class BootReceiver : BroadcastReceiver() {
             CoroutineScope(Dispatchers.IO).launch {
                 val scheduledAlarms = scheduledAlarmDao.getAll()
                 scheduledAlarms.forEach { alarm ->
-                    if (!alarm.isExecuted) {
+                    if (!alarm.isExecuted && !alarm.isCancelled) {
                         val calendar = java.util.Calendar.getInstance().apply {
                             set(java.util.Calendar.YEAR, alarm.year)
                             set(java.util.Calendar.MONTH, alarm.month)

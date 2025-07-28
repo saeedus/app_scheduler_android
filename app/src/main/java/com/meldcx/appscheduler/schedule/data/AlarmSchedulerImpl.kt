@@ -43,4 +43,17 @@ class AlarmSchedulerImpl(private val context: Context) : AlarmScheduler {
             pendingIntent
         )
     }
+
+    override fun cancel(alarm: ScheduledAlarm) {
+        val intent = Intent(context, AlarmReceiver::class.java).apply {
+            putExtra(Constants.SCHEDULED_ALARM_KEY, alarm)
+        }
+        val pendingIntent = PendingIntent.getBroadcast(
+            context,
+            alarm.id,
+            intent,
+            PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE
+        )
+        pendingIntent?.cancel()
+    }
 }
